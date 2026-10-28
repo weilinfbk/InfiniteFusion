@@ -662,8 +662,14 @@
 
             nodeA.remove(); nodeB.remove();
 
-            const pair = [nameA, nameB].sort().join('+');
-            let result = activeRecipes[pair];
+            const rawRecipes = typeof recipes !== 'undefined' ? recipes : recipesBackup;
+
+// 键统一规范：拆开 → 去空格 → 码点排序 → 重新拼
+const activeRecipes = {};
+for (const key in rawRecipes) {
+    const parts = key.split(/[+＋]/).map(s => s.trim()).sort();
+    activeRecipes[parts.join('+')] = rawRecipes[key];
+}
 
             if (result) {
                 sound.success();
