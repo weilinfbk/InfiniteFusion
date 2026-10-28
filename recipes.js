@@ -1,4 +1,5 @@
-const rawvRecipes = {
+// recipes.js 开头改成：
+const recipes = {
   // ===== 生命 / 人类 =====
   '海洋+雷电': { name: '生命', en: 'Life', emoji: '🫀' },
   '生命+水': { name: '细胞', en: 'Cell', emoji: '🦠' },
