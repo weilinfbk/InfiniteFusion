@@ -1,4 +1,3 @@
-// recipes.js 开头改成：
 const recipes = {
   // ===== 生命 / 人类 =====
   '海洋+雷电': { name: '生命', en: 'Life', emoji: '🫀' },
@@ -590,7 +589,7 @@ const recipes = {
   '虫洞+宇宙互联网': { name: '虫洞网络', en: 'Wormhole Network', emoji: '🕳️' },
   '虫洞网络+星际航线': { name: '瞬移航线', en: 'Teleport Route', emoji: '🌠' },
   '瞬移航线+银河联邦': { name: '银河交通网', en: 'Galactic Transport Network', emoji: '🌐' },
-  '银河交通网+宇宙文明': { name: '宇宙交通文明', en: 'Cosmic Transport Civilization', emoji: '🌌' }
+  '银河交通网+宇宙文明': { name: '宇宙交通文明', en: 'Cosmic Transport Civilization', emoji: '🌌' },
   // ===== 地理：地形 / 气候 / 地图 / 探险 =====
   '蒸汽+烟雾': { name: '空气', en: 'Air', emoji: '💨' },
   '空气+太阳': { name: '风', en: 'Wind', emoji: '🌬️' },
