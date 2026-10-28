@@ -270,8 +270,18 @@
             '乌云+火': { name: '雷电', en: 'Lightning', emoji: '⚡' }, 
             '熔岩+水': { name: '黑曜石', en: 'Obsidian', emoji: '⬛' }
         };
+
         // 如果外部引入成功，用外部的；否则用兜底的
-        const activeRecipes = typeof recipes !== 'undefined' ? recipes : recipesBackup;
+        const rawRecipes = typeof recipes !== 'undefined' ? recipes : recipesBackup;
+
+        // 键统一规范化：拆开 → 去空格 → 码点排序 → 重新拼
+        const activeRecipes = {};
+        for (const key in rawRecipes) {
+            if (!rawRecipes[key] || typeof rawRecipes[key] !== 'object') continue;
+            const parts = key.split(/[+＋]/).map(s => s.trim()).sort();
+            if (parts.length !== 2) continue;
+            activeRecipes[parts.join('+')] = rawRecipes[key];
+        }
 
         // =========================================
         // 1. 极简音效
@@ -662,14 +672,8 @@
 
             nodeA.remove(); nodeB.remove();
 
-            const rawRecipes = typeof recipes !== 'undefined' ? recipes : recipesBackup;
-
-// 键统一规范：拆开 → 去空格 → 码点排序 → 重新拼
-const activeRecipes = {};
-for (const key in rawRecipes) {
-    const parts = key.split(/[+＋]/).map(s => s.trim()).sort();
-    activeRecipes[parts.join('+')] = rawRecipes[key];
-}
+            const pair = [nameA, nameB].sort().join('+');
+            const result = activeRecipes[pair];
 
             if (result) {
                 sound.success();
