@@ -867,5 +867,150 @@ const recipes = {
   '时间管理+人类': { name: '效率', en: 'Efficiency', emoji: '⏱️' },
   '效率+人工智能': { name: '自动化', en: 'Automation', emoji: '⚙️' },
   '自动化+社会': { name: '自动化社会', en: 'Automated Society', emoji: '🤖' },
-  '自动化社会+后人类文明': { name: '无人工文明', en: 'Post-labor Civilization', emoji: '♾️' }
+  '自动化社会+后人类文明': { name: '无人工文明', en: 'Post-labor Civilization', emoji: '♾️' }.
+  // ===== 木炭线：墨水 / 文化 =====
+  '木炭+水': { name: '墨水', en: 'Ink', emoji: '🖋️' },
+  '墨水+纸': { name: '书法', en: 'Calligraphy', emoji: '✍️' },
+  '书法+文化': { name: '艺术', en: 'Art', emoji: '🎨' },
+  '艺术+城市': { name: '艺术之都', en: 'Art Capital', emoji: '🎭' },
+  '艺术之都+旅游': { name: '艺术旅游城市', en: 'Art Tourism City', emoji: '🏛️' },
+
+  // ===== 蒸汽线：温泉 / 工业 =====
+  '蒸汽+泥巴': { name: '温泉', en: 'Hot Spring', emoji: '♨️' },
+  '温泉+房子': { name: '温泉旅馆', en: 'Hot Spring Inn', emoji: '🏨' },
+  '温泉旅馆+旅游': { name: '温泉度假村', en: 'Hot Spring Resort', emoji: '🏖️' },
+  '温泉度假村+城市': { name: '温泉城市', en: 'Hot Spring City', emoji: '🏙️' },
+  '蒸汽+黄金': { name: '蒸汽锤', en: 'Steam Hammer', emoji: '🔨' },
+  '蒸汽锤+铁锭': { name: '机械锤', en: 'Mechanical Hammer', emoji: '⚒️' },
+  '机械锤+工厂': { name: '机械工厂', en: 'Mechanical Factory', emoji: '🏭' },
+  '机械工厂+生产线': { name: '自动化机械工厂', en: 'Automated Mechanical Factory', emoji: '🤖' },
+
+  // ===== 砖块线：金砖 / 金融 =====
+  '砖块+黄金': { name: '金砖', en: 'Gold Brick', emoji: '🧱' },
+  '金砖+银行': { name: '金库', en: 'Vault', emoji: '🏦' },
+  '金库+股票': { name: '证券金库', en: 'Securities Vault', emoji: '📈' },
+  '金库+保险': { name: '保险库', en: 'Safe Deposit Box', emoji: '🔐' },
+  '保险库+数字货币': { name: '数字金库', en: 'Digital Vault', emoji: '💳' },
+
+  // ===== 熔岩线：火山岛 / 极端生态 =====
+  '熔岩+海洋': { name: '火山岛', en: 'Volcanic Island', emoji: '🌋' },
+  '火山岛+植物': { name: '火山生态', en: 'Volcanic Ecology', emoji: '🌿' },
+  '火山生态+生命': { name: '火山生命', en: 'Volcanic Life', emoji: '🫀' },
+  '火山生命+基因': { name: '极端环境基因', en: 'Extremophile Gene', emoji: '🧬' },
+
+  // ===== 木材线：独木舟 / 航海 / 殖民 =====
+  '木材+海洋': { name: '独木舟', en: 'Canoe', emoji: '🛶' },
+  '独木舟+探险': { name: '航海探险', en: 'Voyage of Exploration', emoji: '🧭' },
+  '航海探险+新大陆': { name: '殖民探险', en: 'Colonial Expedition', emoji: '🏴' },
+  '殖民探险+战争': { name: '殖民战争', en: 'Colonial War', emoji: '⚔️' },
+
+  // ===== 黄金线：金矿 / 矿业股票 =====
+  '黄金+岩石': { name: '金矿', en: 'Gold Mine', emoji: '⛏️' },
+  '金矿+矿石': { name: '黄金矿石', en: 'Gold Ore', emoji: '🪨' },
+  '黄金矿石+熔炉': { name: '金锭', en: 'Gold Ingot', emoji: '🪙' },
+  '黄金矿石+股票': { name: '矿业股票', en: 'Mining Stock', emoji: '📈' },
+  '矿业股票+市场': { name: '矿业市场', en: 'Mining Market', emoji: '🏪' },
+
+  // ===== 泥巴线：泥石流 / 灾害 / 救灾 =====
+  '泥巴+岩石': { name: '泥石流', en: 'Mudslide', emoji: '🌊' },
+  '泥石流+房子': { name: '泥石流灾害', en: 'Mudslide Disaster', emoji: '🚨' },
+  '泥石流灾害+救援队': { name: '救灾', en: 'Disaster Relief', emoji: '🚑' },
+  '救灾+国家': { name: '救灾体系', en: 'Disaster Relief System', emoji: '🏛️' },
+
+  // ===== 海洋线：海藻 / 生物材料 =====
+  '海洋+植物': { name: '海藻', en: 'Seaweed', emoji: '🌿' },
+  '海藻+化学': { name: '生物塑料', en: 'Bioplastic', emoji: '🧪' },
+  '生物塑料+环保系统': { name: '可降解材料', en: 'Biodegradable Material', emoji: '♻️' },
+  '可降解材料+工厂': { name: '环保工厂', en: 'Eco Factory', emoji: '🏭' },
+
+  // ===== 火焰线：烟囱 / 工业排放 / 减排 =====
+  '火焰+烟雾': { name: '烟囱', en: 'Chimney', emoji: '🏭' },
+  '烟囱+工厂': { name: '工业排放', en: 'Industrial Emissions', emoji: '💨' },
+  '工业排放+环保系统': { name: '减排系统', en: 'Emission Reduction System', emoji: '🌱' },
+  '减排系统+绿色文明': { name: '低碳文明', en: 'Low-carbon Civilization', emoji: '🌍' },
+
+  // ===== 岩石线：苔藓 / 苔原 / 游牧 =====
+  '岩石+植物': { name: '苔藓', en: 'Moss', emoji: '🌿' },
+  '苔藓+土': { name: '苔原', en: 'Tundra', emoji: '❄️' },
+  '苔原+动物': { name: '驯鹿', en: 'Reindeer', emoji: '🦌' },
+  '驯鹿+人类': { name: '游牧', en: 'Nomadism', emoji: '🏕️' },
+
+  // ===== 植物线：公园 / 休闲 / 旅游经济 =====
+  '植物+城市': { name: '公园', en: 'Park', emoji: '🌳' },
+  '公园+人类': { name: '休闲', en: 'Leisure', emoji: '🏞️' },
+  '休闲+经济': { name: '旅游经济', en: 'Tourism Economy', emoji: '💰' },
+  '旅游经济+股票': { name: '旅游股票', en: 'Tourism Stock', emoji: '📈' },
+
+  // ===== 树木线：绿色城市 / 生态文明 =====
+  '树木+城市': { name: '绿色城市', en: 'Green City', emoji: '🌳' },
+  '绿色城市+环保系统': { name: '生态城市', en: 'Eco City', emoji: '🌱' },
+  '生态城市+文明': { name: '生态文明', en: 'Ecological Civilization', emoji: '🌍' },
+  '生态文明+宇宙文明': { name: '宇宙生态文明', en: 'Cosmic Ecological Civilization', emoji: '🌌' },
+
+  // ===== 墙壁线：电墙 / 智慧能源城市 =====
+  '墙壁+雷电': { name: '电墙', en: 'Electric Wall', emoji: '⚡' },
+  '电墙+城市': { name: '电网城市', en: 'Power Grid City', emoji: '🏙️' },
+  '电网城市+智能电网': { name: '智慧能源城市', en: 'Smart Energy City', emoji: '🔌' },
+  '智慧能源城市+清洁能源': { name: '零碳城市', en: 'Zero-carbon City', emoji: '🌱' },
+
+  // ===== 房子线：海景房 / 度假地产 =====
+  '房子+海洋': { name: '海景房', en: 'Sea-view House', emoji: '🏖️' },
+  '海景房+旅游': { name: '度假村', en: 'Resort', emoji: '🏨' },
+  '度假村+全球旅游': { name: '国际度假区', en: 'International Resort Area', emoji: '🌍' },
+  '国际度假区+股票': { name: '旅游地产股', en: 'Tourism Real Estate Stock', emoji: '📈' },
+
+  // ===== 城市线：云城 / 元宇宙城市 =====
+  '城市+云朵': { name: '云城', en: 'Cloud City', emoji: '☁️' },
+  '云城+互联网': { name: '云城市', en: 'Cloud City Network', emoji: '🌐' },
+  '云城市+云计算': { name: '云上城市', en: 'Cloud-top City', emoji: '☁️' },
+  '云上城市+元宇宙': { name: '元宇宙城市', en: 'Metaverse City', emoji: '🕶️' },
+
+  // ===== 黑曜石线：黑曜火 / 暗能量 =====
+  '黑曜石+火焰': { name: '黑曜火', en: 'Obsidian Fire', emoji: '🔥' },
+  '黑曜火+科学': { name: '暗能量', en: 'Dark Energy', emoji: '🌌' },
+  '暗能量+宇宙': { name: '暗物质', en: 'Dark Matter', emoji: '🌑' },
+  '暗能量+量子': { name: '暗量子', en: 'Dark Quantum', emoji: '🌀' },
+  '暗量子+量子计算机': { name: '暗量子计算机', en: 'Dark Quantum Computer', emoji: '🖥️' },
+
+  // ===== 历史 / 战争 / 金钱 / 股票混合 =====
+  '墨水+合同': { name: '签名', en: 'Signature', emoji: '✍️' },
+  '签名+法律': { name: '生效合同', en: 'Effective Contract', emoji: '📄' },
+  '生效合同+股票': { name: '股权合同', en: 'Equity Contract', emoji: '📈' },
+  '股权合同+证券交易所': { name: '上市协议', en: 'Listing Agreement', emoji: '🔔' },
+
+  '金砖+战争': { name: '军费', en: 'Military Spending', emoji: '💰' },
+  '军费+国家': { name: '财政', en: 'Fiscal Finance', emoji: '🏛️' },
+  '财政+股票': { name: '主权基金', en: 'Sovereign Fund', emoji: '📊' },
+  '主权基金+全球贸易': { name: '全球投资', en: 'Global Investment', emoji: '🌍' },
+
+  '独木舟+战争': { name: '战船', en: 'War Canoe', emoji: '🛶' },
+  '战船+军舰': { name: '舰队', en: 'Fleet', emoji: '🚢' },
+  '舰队+卫星': { name: '卫星舰队', en: 'Satellite Fleet', emoji: '🛰️' },
+  '卫星舰队+太空防御': { name: '太空舰队防线', en: 'Space Fleet Defense Line', emoji: '🛡️' },
+
+  '火山岛+战争': { name: '军事基地', en: 'Military Base', emoji: '🎖️' },
+  '军事基地+导弹': { name: '导弹基地', en: 'Missile Base', emoji: '🚀' },
+  '导弹基地+行星防御': { name: '行星防御基地', en: 'Planetary Defense Base', emoji: '🛡️' },
+  '行星防御基地+银河防线': { name: '银河基地', en: 'Galactic Base', emoji: '🌌' },
+
+  '烟囱+股票': { name: '工业股', en: 'Industrial Stock', emoji: '📈' },
+  '工业股+环保系统': { name: '绿色工业股', en: 'Green Industrial Stock', emoji: '🌱' },
+  '绿色工业股+金融监管': { name: '绿色金融', en: 'Green Finance', emoji: '💰' },
+
+  '温泉+股票': { name: '旅游股', en: 'Tourism Stock', emoji: '📈' },
+  '旅游股+市场': { name: '旅游市场', en: 'Tourism Market', emoji: '🏪' },
+  '旅游市场+全球旅游': { name: '全球旅游市场', en: 'Global Tourism Market', emoji: '🌍' },
+
+  '金矿+股票': { name: '矿业股', en: 'Mining Stock', emoji: '📈' },
+  '矿业股+黄金': { name: '黄金股', en: 'Gold Stock', emoji: '🪙' },
+  '黄金股+金融危机': { name: '避险资产', en: 'Safe-haven Asset', emoji: '🛡️' },
+  '避险资产+黄金': { name: '黄金储备', en: 'Gold Reserve', emoji: '🏦' },
+
+  '海藻+股票': { name: '生物科技股', en: 'Biotech Stock', emoji: '📈' },
+  '生物科技股+基因治疗': { name: '基因股票', en: 'Gene Stock', emoji: '🧬' },
+  '基因股票+医疗城市': { name: '医疗金融', en: 'Medical Finance', emoji: '🏥' },
+
+  '公园+股票': { name: '绿色股票', en: 'Green Stock', emoji: '📈' },
+  '绿色股票+碳交易': { name: '碳金融', en: 'Carbon Finance', emoji: '💰' },
+  '碳金融+清洁能源': { name: '碳中和发展', en: 'Carbon Neutral Development', emoji: '🌱' }
 };
