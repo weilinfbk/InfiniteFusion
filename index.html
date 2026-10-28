@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>无尽合成 - 双语版</title>
+    <style>
+        /* =========================================
+           1. M3 颜色与形状变量
+           ========================================= */
+        :root {
+            --md-sys-color-primary: #1C1B1F; 
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-secondary-container: #E0E0E0; 
+            --md-sys-color-on-secondary-container: #000000;
+            --md-sys-color-surface: #FFFFFF;
+            --md-sys-color-surface-container-low: rgba(255, 255, 255, 0.85);
+            --md-sys-color-surface-container-high: #EFEFEF;
+            --md-sys-color-on-surface: #1C1B1F;
+            --md-sys-color-on-surface-variant: #49454F;
+            --md-sys-color-outline: #79747E;
+            --md-sys-color-outline-variant: #CAC4D0;
+            --md-sys-elevation-shadow: rgba(0, 0, 0, 0.08);
+            
+            --bg-glow-1: rgba(200, 200, 200, 0.4);
+            --bg-glow-2: rgba(220, 220, 220, 0.4);
+            --bg-dot-color: rgba(0, 0, 0, 0.04);
+            --node-bg: #FFFFFF;
+            --node-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --sheet-peek-height: 150px;
+        }
+
+        [data-theme="dark"] {
+            --md-sys-color-primary: #E6E1E5;
+            --md-sys-color-on-primary: #1C1B1F;
+            --md-sys-color-secondary-container: #3B3B3B; 
+            --md-sys-color-on-secondary-container: #FFFFFF;
+            --md-sys-color-surface: #121212; 
+            --md-sys-color-surface-container-low: rgba(30, 30, 30, 0.85);
+            --md-sys-color-surface-container-high: #2C2C2C;
+            --md-sys-color-on-surface: #E6E1E5;
+            --md-sys-color-on-surface-variant: #CAC4D0;
+            --md-sys-color-outline: #938F99;
+            --md-sys-color-outline-variant: #49454F;
+            --md-sys-elevation-shadow: rgba(0, 0, 0, 0.4);
+            
+            --bg-glow-1: rgba(50, 50, 50, 0.5);
+            --bg-glow-2: rgba(40, 40, 40, 0.5);
+            --bg-dot-color: rgba(255, 255, 255, 0.03);
+            --node-bg: #2C2C2C;
+            --node-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        :root {
+            --md-sys-shape-corner-small: 8px;
+            --md-sys-shape-corner-medium: 12px;
+            --md-sys-shape-corner-large: 16px;
+            --md-sys-shape-corner-extra-large: 28px;
+        }
+
+        /* =========================================
+           2. 全局与动态背景
+           ========================================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            color: var(--md-sys-color-on-surface);
+            font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+            display: flex; flex-direction: column;
+            height: 100vh; height: 100dvh; overflow: hidden;
+            user-select: none; transition: color 0.4s ease;
+            overscroll-behavior: none;
+            touch-action: none;
+        }
+
+        .m3-bg-container { position: fixed; inset: 0; z-index: -1; overflow: hidden; background-color: var(--md-sys-color-surface); transition: background-color 0.4s ease; }
+        .m3-bg-grid { position: absolute; inset: 0; background-image: radial-gradient(var(--bg-dot-color) 1px, transparent 1px); background-size: 24px 24px; z-index: 1; }
+        .m3-glow { position: absolute; width: 80vw; height: 80vw; z-index: 0; will-change: transform; }
+        .m3-glow-1 { background: radial-gradient(circle, var(--bg-glow-1) 0%, transparent 70%); top: -20vh; left: -20vw; animation: float-glow-1 25s infinite alternate ease-in-out; }
+        .m3-glow-2 { background: radial-gradient(circle, var(--bg-glow-2) 0%, transparent 70%); bottom: -20vh; right: -20vw; animation: float-glow-2 30s infinite alternate ease-in-out; }
+        @keyframes float-glow-1 { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(20vw, 20vh, 0) scale(1.2); } }
+        @keyframes float-glow-2 { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(-20vw, -20vh, 0) scale(1.1); } }
+
+        /* =========================================
+           3. 顶部栏与公告
+           ========================================= */
+        .m3-top-app-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            height: 60px; padding: 0 16px; background-color: transparent; z-index: 100;
+        }
+        .app-title { font-size: 20px; font-weight: 500; margin-left: 8px; }
+        .header-actions { display: flex; gap: 2px; }
+        .m3-icon-button {
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--md-sys-color-on-surface-variant); transition: background-color 0.2s;
+            font-size: 14px; font-weight: 600;
+        }
+        .m3-icon-button:hover { background-color: rgba(121, 116, 126, 0.1); }
+
+        .m3-announcement {
+            display: flex; justify-content: space-between; align-items: center;
+            margin: 10px 16px 0 16px; padding: 10px 14px;
+            background-color: var(--md-sys-color-surface-container-high);
+            border-radius: var(--md-sys-shape-corner-medium);
+            font-size: 13px; color: var(--md-sys-color-on-surface-variant);
+            box-shadow: 0 2px 6px var(--md-sys-elevation-shadow);
+            transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+            max-height: 100px; overflow: hidden; z-index: 100; flex-shrink: 0;
+        }
+        .m3-announcement.hide { opacity: 0; transform: translateY(-10px); max-height: 0; margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; pointer-events: none; }
+        .announcement-text { flex: 1; line-height: 1.4; }
+        .announcement-close { background: none; border: none; color: var(--md-sys-color-outline); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 50%; margin-left: 8px; transition: background-color 0.2s, color 0.2s; }
+        .announcement-close:hover { background-color: rgba(121, 116, 126, 0.15); color: var(--md-sys-color-on-surface); }
+
+        /* =========================================
+           4. 画布
+           ========================================= */
+        .m3-canvas-area { flex: 1; position: relative; overflow: hidden; z-index: 10; touch-action: none; }
+        .canvas-node {
+            position: absolute; transform: translate(-50%, -50%);
+            display: inline-flex; align-items: center; gap: 6px;
+            height: 44px; padding: 0 16px;
+            border-radius: var(--md-sys-shape-corner-medium);
+            background-color: var(--node-bg); color: var(--md-sys-color-on-surface);
+            font-size: 15px; font-weight: 500;
+            box-shadow: var(--node-shadow);
+            white-space: nowrap; touch-action: none; cursor: grab;
+            transition: box-shadow 0.2s, transform 0.2s, background-color 0.4s;
+            z-index: 20; border: 1px solid rgba(121, 116, 126, 0.1);
+        }
+        .canvas-node:active { cursor: grabbing; }
+        .canvas-node.dragging { z-index: 1000; transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 12px 24px rgba(0,0,0,0.3); transition: none; cursor: grabbing; }
+        .canvas-node.hover-target { box-shadow: 0 0 0 3px var(--md-sys-color-primary); transform: translate(-50%, -50%) scale(1.05); }
+        .emoji { font-size: 20px; pointer-events: none; }
+        .text { pointer-events: none; }
+
+        /* =========================================
+           5. 底部抽拉面板
+           ========================================= */
+        .m3-bottom-sheet {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 70vh;
+            background-color: var(--md-sys-color-surface-container-low);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-radius: var(--md-sys-shape-corner-extra-large) var(--md-sys-shape-corner-extra-large) 0 0;
+            box-shadow: 0 -4px 24px var(--md-sys-elevation-shadow);
+            z-index: 50; display: flex; flex-direction: column;
+            transform: translateY(calc(100% - var(--sheet-peek-height)));
+            will-change: transform; border-top: 1px solid rgba(255, 255, 255, 0.1);
+            touch-action: none;
+        }
+
+        .sheet-drag-area { cursor: grab; touch-action: none; }
+        .sheet-drag-area:active { cursor: grabbing; }
+        .sheet-handle-area { height: 30px; width: 100%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+        .sheet-handle { width: 40px; height: 5px; background-color: var(--md-sys-color-outline-variant); border-radius: 3px; }
+
+        .m3-tabs { display: flex; padding: 0 16px; gap: 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); flex-shrink: 0; margin-bottom: 12px; align-items: center; justify-content: space-between; }
+        .tabs-left { display: flex; gap: 16px; }
+        .m3-tab { padding: 12px 4px; font-size: 15px; font-weight: 500; color: var(--md-sys-color-on-surface-variant); cursor: pointer; position: relative; opacity: 0.7; transition: opacity 0.2s; }
+        .m3-tab.active { color: var(--md-sys-color-primary); opacity: 1; }
+        .m3-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px; background-color: var(--md-sys-color-primary); border-radius: 3px 3px 0 0; }
+
+        .sheet-content { flex: 1; display: flex; flex-direction: column; padding: 0 16px 16px; overflow: hidden; }
+        .tab-pane { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+        .tab-pane.active { display: flex; }
+
+        .search-box { position: relative; margin-bottom: 12px; }
+        .search-box input { width: 100%; height: 44px; border-radius: var(--md-sys-shape-corner-extra-large); border: none; outline: none; background-color: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface); padding: 0 16px 0 40px; font-size: 15px; }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--md-sys-color-on-surface-variant); pointer-events: none; }
+
+        .list-container { flex: 1; overflow-y: auto; padding-bottom: 20px; align-content: flex-start; display: flex; flex-wrap: wrap; gap: 8px; touch-action: none; }
+        #fav-pane { border: 2px dashed transparent; border-radius: var(--md-sys-shape-corner-large); transition: border-color 0.2s, background-color 0.2s; min-height: 100px; }
+        #fav-pane.drag-hover { border-color: var(--md-sys-color-primary); background-color: rgba(121, 116, 126, 0.1); }
+        .fav-hint { width: 100%; text-align: center; padding: 40px 0; color: var(--md-sys-color-outline); font-size: 14px; }
+
+        .m3-chip { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 12px; border-radius: var(--md-sys-shape-corner-small); background-color: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface); font-size: 14px; font-weight: 500; white-space: nowrap; touch-action: none; border: 1px solid transparent; cursor: grab; transition: background-color 0.2s; }
+        .m3-chip:active { cursor: grabbing; background-color: var(--md-sys-color-secondary-container); }
+
+        @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+        .animate-pop { animation: pop 0.3s cubic-bezier(0.2, 0, 0.4, 1) forwards; }
+
+        .list-container::-webkit-scrollbar { width: 12px; height: 12px; }
+        .list-container::-webkit-scrollbar-track { background: var(--md-sys-color-surface-container-high); border-radius: 10px; margin: 4px 0; }
+        .list-container::-webkit-scrollbar-thumb { background-color: var(--md-sys-color-outline-variant); border-radius: 10px; border: 3px solid transparent; background-clip: padding-box; transition: background-color 0.2s; }
+        .list-container::-webkit-scrollbar-thumb:hover { background-color: var(--md-sys-color-outline); }
+    </style>
+</head>
+<body>
+
+    <div class="m3-bg-container">
+        <div class="m3-glow m3-glow-1"></div>
+        <div class="m3-glow m3-glow-2"></div>
+        <div class="m3-bg-grid"></div>
+    </div>
+
+    <header class="m3-top-app-bar">
+        <h1 class="app-title" id="ui-title">🧪 无尽合成</h1>
+        <div class="header-actions">
+            <!-- 加了一个语言切换按钮 -->
+            <div class="m3-icon-button" id="lang-toggle" title="Switch Language">EN</div>
+            <div class="m3-icon-button" id="fullscreen-toggle"></div>
+            <div class="m3-icon-button" id="sound-toggle"></div>
+            <div class="m3-icon-button" id="theme-toggle"></div>
+        </div>
+    </header>
+
+    <div class="m3-announcement" id="announcement-banner">
+        <span class="announcement-text" id="announcement-text">欢迎来到无尽合成！向上拖拽下方元素到画布中，碰撞出无限可能吧 ✨</span>
+        <button class="announcement-close" id="btn-close-announcement" aria-label="关闭公告">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+    </div>
+
+    <main class="m3-canvas-area" id="canvas"></main>
+
+    <div class="m3-bottom-sheet" id="bottom-sheet">
+        <div class="sheet-drag-area" id="sheet-drag-area">
+            <div class="sheet-handle-area"><div class="sheet-handle"></div></div>
+            <div class="m3-tabs">
+                <div class="tabs-left">
+                    <div class="m3-tab active" data-target="all-pane" id="tab-all">全部元素</div>
+                    <div class="m3-tab" data-target="fav-pane" id="tab-fav">⭐️ 收藏夹</div>
+                </div>
+                <div class="m3-icon-button" id="btn-clear" title="清空画布" style="width: 36px; height: 36px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+                </div>
+            </div>
+        </div>
+        <div class="sheet-content">
+            <div class="tab-pane active" id="all-pane">
+                <div class="search-box">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="search-input" placeholder="搜索已解锁元素...">
+                </div>
+                <div class="list-container" id="elements-list"></div>
+            </div>
+            <div class="tab-pane" id="fav-pane">
+                <div class="list-container" id="favorites-list">
+                    <div class="fav-hint" id="fav-hint">从画布拖拽元素到此区域即可收藏</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 你的分离配方引入 -->
+    <script src="recipes.js"></script>
+
+    <!-- 游戏主逻辑 -->
+    <script>
+        // 如果 recipes.js 还没建，先把这里的 recipes 备份兜底，防止报错
+        let recipesBackup = {
+            '木+火': { name: '木炭', en: 'Charcoal', emoji: '🌑' }, 
+            '水+火': { name: '蒸汽', en: 'Steam', emoji: '☁️' }, 
+            '土+火': { name: '砖块', en: 'Brick', emoji: '🧱' },
+            '金+火': { name: '熔岩', en: 'Lava', emoji: '🌋' }, 
+            '木+木': { name: '木材', en: 'Plank', emoji: '🪵' }, 
+            '金+金': { name: '黄金', en: 'Gold Bar', emoji: '👑' },
+            '土+水': { name: '泥巴', en: 'Mud', emoji: '🟤' }, 
+            '水+水': { name: '海洋', en: 'Ocean', emoji: '🌊' }, 
+            '火+火': { name: '火焰', en: 'Flame', emoji: '🔥' },
+            '土+土': { name: '岩石', en: 'Rock', emoji: '⛰️' }, 
+            '水+木': { name: '植物', en: 'Plant', emoji: '🌱' }, 
+            '植物+火': { name: '烟雾', en: 'Smoke', emoji: '💨' }, 
+            '植物+土': { name: '树木', en: 'Tree', emoji: '🌳' }, 
+            '砖块+砖块': { name: '墙壁', en: 'Wall', emoji: '🧱' }, 
+            '墙壁+墙壁': { name: '房子', en: 'House', emoji: '🏠' }, 
+            '房子+房子': { name: '城市', en: 'City', emoji: '🏙️' }, 
+            '蒸汽+蒸汽': { name: '云朵', en: 'Cloud', emoji: '☁️' }, 
+            '云朵+云朵': { name: '乌云', en: 'Storm Cloud', emoji: '🌧️' }, 
+            '乌云+火': { name: '雷电', en: 'Lightning', emoji: '⚡' }, 
+            '熔岩+水': { name: '黑曜石', en: 'Obsidian', emoji: '⬛' }
+        };
+        // 如果外部引入成功，用外部的；否则用兜底的
+        const activeRecipes = typeof recipes !== 'undefined' ? recipes : recipesBackup;
+
+        // =========================================
+        // 1. 极简音效
+        // =========================================
+        let audioCtx = null, isMuted = false;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+        function playTone(freq, type, duration, volume, slideTo = null) {
+            if (isMuted || !audioCtx) return;
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, audioCtx.currentTime + duration);
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(volume, audioCtx.currentTime + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + duration);
+        }
+        const sound = {
+            click: () => playTone(600, 'sine', 0.1, 0.1),
+            success: () => { playTone(523.25, 'sine', 0.2, 0.1); setTimeout(() => playTone(783.99, 'sine', 0.3, 0.1), 100); },
+            discover: () => { playTone(440, 'sine', 0.2, 0.1); setTimeout(() => playTone(554.37, 'sine', 0.2, 0.1), 100); setTimeout(() => playTone(659.25, 'sine', 0.4, 0.1), 200); },
+            fail: () => playTone(300, 'triangle', 0.3, 0.15, 150)
+        };
+
+        // =========================================
+        // 2. 多语言字典与数据
+        // =========================================
+        let currentLang = 'zh'; 
+        const i18n = {
+            zh: {
+                title: '🧪 无尽合成',
+                announcement: '欢迎来到无尽合成！向上拖拽下方元素到画布中，碰撞出无限可能吧 ✨',
+                search: '搜索已解锁元素...',
+                tabAll: '全部元素',
+                tabFav: '⭐️ 收藏夹',
+                clear: '清空画布',
+                favHint: '从画布拖拽元素到此区域即可收藏',
+                langBtn: 'EN'
+            },
+            en: {
+                title: '🧪 Infinite Alchemy',
+                announcement: 'Welcome! Drag elements up to the canvas and combine them to discover magic ✨',
+                search: 'Search elements...',
+                tabAll: 'All Elements',
+                tabFav: '⭐️ Favorites',
+                clear: 'Clear Canvas',
+                favHint: 'Drag elements here to favorite',
+                langBtn: '中文'
+            }
+        };
+
+        let discoveredElements = [
+            { name: '金', en: 'Gold', emoji: '🪙' }, 
+            { name: '木', en: 'Wood', emoji: '🪵' }, 
+            { name: '水', en: 'Water', emoji: '💧' }, 
+            { name: '火', en: 'Fire', emoji: '🔥' }, 
+            { name: '土', en: 'Earth', emoji: '🪨' }
+        ];
+        let favoriteElements = [];
+        let searchQuery = '';
+
+        // 获取当前语言的显示名字
+        function getElName(el) {
+            return currentLang === 'en' && el.en ? el.en : el.name;
+        }
+
+        // =========================================
+        // 3. DOM 与 基础操作
+        // =========================================
+        const canvas = document.getElementById('canvas');
+        const listEl = document.getElementById('elements-list');
+        const favListEl = document.getElementById('favorites-list');
+        const favPane = document.getElementById('fav-pane');
+        const searchInput = document.getElementById('search-input');
+
+        // 关闭公告
+        document.getElementById('btn-close-announcement').onclick = (e) => {
+            e.stopPropagation();
+            const ann = document.getElementById('announcement-banner');
+            ann.classList.add('hide');
+            setTimeout(() => ann.remove(), 300);
+        };
+
+        // 语言切换逻辑
+        const langToggle = document.getElementById('lang-toggle');
+        langToggle.onclick = () => {
+            initAudio(); sound.click();
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            updateUI();
+        };
+
+        function updateUI() {
+            const dict = i18n[currentLang];
+            document.getElementById('ui-title').innerText = dict.title;
+            document.getElementById('announcement-text').innerText = dict.announcement;
+            searchInput.placeholder = dict.search;
+            document.getElementById('tab-all').innerText = dict.tabAll;
+            document.getElementById('tab-fav').innerText = dict.tabFav;
+            document.getElementById('btn-clear').title = dict.clear;
+            document.getElementById('fav-hint').innerText = dict.favHint;
+            langToggle.innerText = dict.langBtn;
+
+            // 重新渲染列表
+            renderInventory();
+            renderFavorites();
+            
+            // 重新渲染画布上的节点
+            document.querySelectorAll('.canvas-node').forEach(node => {
+                const name = node.dataset.name;
+                const elData = discoveredElements.find(e => e.name === name) || { name: name, en: name };
+                node.querySelector('.text').innerText = getElName(elData);
+            });
+        }
+
+        const headerActions = {
+            soundBtn: document.getElementById('sound-toggle'),
+            themeBtn: document.getElementById('theme-toggle'),
+            fullscreenBtn: document.getElementById('fullscreen-toggle'),
+            clearBtn: document.getElementById('btn-clear'),
+            bodyEl: document.body
+        };
+        const icons = {
+            soundOn: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`,
+            soundOff: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`,
+            sun: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`,
+            moon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+            fullscreen: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`,
+            exitFullscreen: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 14h6v6m6-16v6h-6m-6 6L3 21m18-18l-7 7"/></svg>`
+        };
+        headerActions.soundBtn.innerHTML = icons.soundOn;
+        headerActions.themeBtn.innerHTML = icons.moon;
+        headerActions.fullscreenBtn.innerHTML = icons.fullscreen;
+
+        headerActions.soundBtn.onclick = () => { initAudio(); isMuted = !isMuted; headerActions.soundBtn.innerHTML = isMuted ? icons.soundOff : icons.soundOn; if (!isMuted) sound.click(); };
+        headerActions.themeBtn.onclick = () => { initAudio(); sound.click(); const isDark = document.body.getAttribute('data-theme') === 'dark'; if (isDark) { document.body.removeAttribute('data-theme'); headerActions.themeBtn.innerHTML = icons.moon; } else { document.body.setAttribute('data-theme', 'dark'); headerActions.themeBtn.innerHTML = icons.sun; } };
+        headerActions.fullscreenBtn.onclick = () => { initAudio(); sound.click(); if (!document.fullscreenElement) { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(e=>console.log(e)); } else { if (document.exitFullscreen) document.exitFullscreen(); } };
+        document.addEventListener('fullscreenchange', () => { headerActions.fullscreenBtn.innerHTML = (document.fullscreenElement) ? icons.exitFullscreen : icons.fullscreen; });
+        headerActions.clearBtn.onclick = (e) => { e.stopPropagation(); initAudio(); sound.fail(); canvas.innerHTML = ''; };
+
+        document.querySelectorAll('.m3-tab').forEach(tab => {
+            tab.onclick = (e) => {
+                e.stopPropagation(); 
+                sound.click();
+                document.querySelectorAll('.m3-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.target).classList.add('active');
+            };
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase();
+            renderInventory();
+        });
+
+        // =========================================
+        // 4. 抽拉面板逻辑
+        // =========================================
+        const bottomSheet = document.getElementById('bottom-sheet');
+        const sheetDragArea = document.getElementById('sheet-drag-area');
+        let startY = 0, startTranslateY = 0, startTime = 0, isDraggingSheet = false, hasMoved = false, sheetHeight = 0, peekHeight = 150, maxY = 0, currentTranslateY = 0;
+
+        function updateSheetMetrics() {
+            sheetHeight = bottomSheet.offsetHeight;
+            maxY = sheetHeight - peekHeight;
+            currentTranslateY = maxY;
+            bottomSheet.style.transform = `translateY(${maxY}px)`;
+        }
+        window.addEventListener('resize', updateSheetMetrics);
+        setTimeout(updateSheetMetrics, 100);
+
+        sheetDragArea.addEventListener('pointerdown', (e) => {
+            initAudio(); sound.click();
+            isDraggingSheet = true; hasMoved = false; startY = e.clientY; startTime = Date.now();
+            const matrix = new WebKitCSSMatrix(window.getComputedStyle(bottomSheet).transform);
+            startTranslateY = matrix.m42; currentTranslateY = startTranslateY;
+            bottomSheet.style.transition = 'none'; 
+            sheetDragArea.setPointerCapture(e.pointerId);
+        });
+
+        sheetDragArea.addEventListener('pointermove', (e) => {
+            if (!isDraggingSheet) return;
+            e.preventDefault();
+            const deltaY = e.clientY - startY;
+            if (Math.abs(deltaY) > 5) hasMoved = true; 
+            let newY = Math.max(0, Math.min(startTranslateY + deltaY, maxY));
+            currentTranslateY = newY;
+            requestAnimationFrame(() => { bottomSheet.style.transform = `translateY(${newY}px)`; });
+        });
+
+        sheetDragArea.addEventListener('pointerup', () => {
+            if (!isDraggingSheet) return;
+            isDraggingSheet = false;
+            bottomSheet.style.transition = 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            const timeDiff = Date.now() - startTime;
+            const deltaY = currentTranslateY - startTranslateY;
+            const velocity = deltaY / timeDiff; 
+            let targetY;
+            if (!hasMoved) targetY = (startTranslateY === 0) ? maxY : 0;
+            else if (velocity > 0.5) targetY = maxY; 
+            else if (velocity < -0.5) targetY = 0; 
+            else targetY = (currentTranslateY > maxY / 2) ? maxY : 0;
+            bottomSheet.style.transform = `translateY(${targetY}px)`;
+            currentTranslateY = targetY;
+        });
+
+        // =========================================
+        // 5. 渲染与拖拽
+        // =========================================
+        function createChip(el, isFav = false) {
+            const chip = document.createElement('div');
+            chip.className = 'm3-chip';
+            chip.innerHTML = `<span class="emoji">${el.emoji}</span><span class="text">${getElName(el)}</span>`;
+            
+            chip.addEventListener('pointerdown', (e) => {
+                e.preventDefault(); 
+                let startX = e.clientX, startY = e.clientY;
+                let triggered = false, isScrolling = false; 
+                const container = chip.closest('.list-container');
+                const initialScrollTop = container.scrollTop;
+
+                const checkMove = (moveEvent) => {
+                    if (triggered) return;
+                    const deltaY = moveEvent.clientY - startY; 
+                    if (!isScrolling && Math.abs(deltaY) > 5) {
+                        if (deltaY < 0) {
+                            triggered = true;
+                            document.removeEventListener('pointermove', checkMove);
+                            document.removeEventListener('pointerup', cancel);
+                            startDrag(moveEvent, el, false, null, isFav);
+                            return;
+                        } else { isScrolling = true; }
+                    }
+                    if (isScrolling) container.scrollTop = initialScrollTop - deltaY;
+                };
+                const cancel = () => {
+                    document.removeEventListener('pointermove', checkMove);
+                    document.removeEventListener('pointerup', cancel);
+                };
+                document.addEventListener('pointermove', checkMove);
+                document.addEventListener('pointerup', cancel);
+            });
+            return chip;
+        }
+
+        function renderInventory() {
+            listEl.innerHTML = '';
+            const filtered = discoveredElements.filter(el => {
+                const name = getElName(el).toLowerCase();
+                return name.includes(searchQuery) || el.name.includes(searchQuery);
+            });
+            filtered.forEach(el => listEl.appendChild(createChip(el, false)));
+        }
+
+        function renderFavorites() {
+            favListEl.innerHTML = '';
+            if (favoriteElements.length === 0) {
+                favListEl.innerHTML = `<div class="fav-hint" id="fav-hint">${i18n[currentLang].favHint}</div>`;
+            } else {
+                favoriteElements.forEach(el => favListEl.appendChild(createChip(el, true)));
+            }
+        }
+
+        function addToFavorites(el) {
+            if (!favoriteElements.find(f => f.name === el.name)) {
+                favoriteElements.push(el);
+                renderFavorites();
+                sound.discover();
+            }
+        }
+
+        function createNode(el, x, y, isNew = false) {
+            const node = document.createElement('div');
+            node.className = 'canvas-node';
+            if (isNew) node.classList.add('animate-pop');
+            node.innerHTML = `<span class="emoji">${el.emoji}</span><span class="text">${getElName(el)}</span>`;
+            node.style.left = `${x}px`;
+            node.style.top = `${y}px`;
+            node.dataset.name = el.name; 
+            node.dataset.emoji = el.emoji;
+            node.addEventListener('pointerdown', (e) => startDrag(e, el, true, node));
+            canvas.appendChild(node);
+            return node;
+        }
+
+        let draggingEl = null, dragNode = null, isFromCanvas = false;
+
+        function startDrag(e, el, fromCanvas, existingNode = null) {
+            initAudio(); sound.click();
+            e.preventDefault();
+            draggingEl = el; isFromCanvas = fromCanvas;
+            const canvasRect = canvas.getBoundingClientRect();
+            
+            if (isFromCanvas) {
+                dragNode = existingNode;
+                dragNode.classList.add('dragging');
+            } else {
+                let x = e.clientX - canvasRect.left;
+                let y = e.clientY - canvasRect.top;
+                dragNode = createNode(el, x, y);
+                dragNode.classList.add('dragging');
+            }
+            document.addEventListener('pointermove', onDragMove);
+            document.addEventListener('pointerup', onDragEnd);
+        }
+
+        function onDragMove(e) {
+            if (!dragNode) return;
+            e.preventDefault();
+            
+            const isFavTabActive = document.getElementById('fav-pane').classList.contains('active');
+            const favRect = favPane.getBoundingClientRect();
+            if (isFavTabActive && e.clientX >= favRect.left && e.clientX <= favRect.right && e.clientY >= favRect.top && e.clientY <= favRect.bottom) {
+                favPane.classList.add('drag-hover'); dragNode.style.opacity = '0.5';
+            } else {
+                favPane.classList.remove('drag-hover'); dragNode.style.opacity = '1';
+            }
+
+            const canvasRect = canvas.getBoundingClientRect();
+            let x = e.clientX - canvasRect.left;
+            let y = e.clientY - canvasRect.top;
+            x = Math.max(40, Math.min(x, canvasRect.width - 40));
+            y = Math.max(30, Math.min(y, canvasRect.height - 30));
+            
+            dragNode.style.left = `${x}px`;
+            dragNode.style.top = `${y}px`;
+            checkCollisionHighlight(dragNode);
+        }
+
+        function onDragEnd(e) {
+            document.removeEventListener('pointermove', onDragMove);
+            document.removeEventListener('pointerup', onDragEnd);
+            if (!dragNode) return;
+            
+            dragNode.classList.remove('dragging');
+            dragNode.style.opacity = '1';
+            favPane.classList.remove('drag-hover');
+            
+            const isFavTabActive = document.getElementById('fav-pane').classList.contains('active');
+            const favRect = favPane.getBoundingClientRect();
+            const inFavArea = isFavTabActive && (e.clientX >= favRect.left && e.clientX <= favRect.right && e.clientY >= favRect.top && e.clientY <= favRect.bottom);
+
+            if (inFavArea) {
+                if (isFromCanvas) dragNode.remove();
+                addToFavorites(draggingEl);
+            } else {
+                const targetNode = checkCollisionHighlight(dragNode);
+                if (targetNode) {
+                    performCombine(dragNode, targetNode);
+                }
+            }
+            dragNode = null; draggingEl = null;
+        }
+
+        function checkCollisionHighlight(currentNode) {
+            document.querySelectorAll('.canvas-node').forEach(n => n.classList.remove('hover-target'));
+            const rectA = currentNode.getBoundingClientRect();
+            const centerA = { x: rectA.left + rectA.width / 2, y: rectA.top + rectA.height / 2 };
+            let hitNode = null;
+            for (let node of document.querySelectorAll('.canvas-node')) {
+                if (node === currentNode) continue;
+                const rectB = node.getBoundingClientRect();
+                const centerB = { x: rectB.left + rectB.width / 2, y: rectB.top + rectB.height / 2 };
+                if (Math.hypot(centerA.x - centerB.x, centerA.y - centerB.y) < 75) {
+                    hitNode = node;
+                    node.classList.add('hover-target');
+                    break;
+                }
+            }
+            return hitNode;
+        }
+
+        // =========================================
+        // 6. 纯逻辑合成
+        // =========================================
+        function performCombine(nodeA, nodeB) {
+            const nameA = nodeA.dataset.name;
+            const nameB = nodeB.dataset.name;
+            
+            const rectA = nodeA.getBoundingClientRect();
+            const rectB = nodeB.getBoundingClientRect();
+            const canvasRect = canvas.getBoundingClientRect();
+            const newX = (rectA.left + rectB.left) / 2 - canvasRect.left + (rectA.width / 2);
+            const newY = (rectA.top + rectB.top) / 2 - canvasRect.top + (rectA.height / 2);
+
+            nodeA.remove(); nodeB.remove();
+
+            const pair = [nameA, nameB].sort().join('+');
+            let result = activeRecipes[pair];
+
+            if (result) {
+                sound.success();
+                finishCombine(result, newX, newY);
+            } else {
+                // 没有配方，生成废料
+                sound.fail();
+                const fallback = { name: '废料', en: 'Waste', emoji: '💩' };
+                finishCombine(fallback, newX, newY);
+            }
+        }
+
+        function finishCombine(result, x, y) {
+            createNode(result, x, y, true);
+            const isNewDiscovery = !discoveredElements.find(e => e.name === result.name);
+            if (isNewDiscovery) {
+                discoveredElements.push(result);
+                renderInventory();
+                setTimeout(() => sound.discover(), 150);
+            }
+        }
+
+        // 初始化
+        renderInventory();
+        renderFavorites();
+        
+        setTimeout(() => {
+            const cw = canvas.clientWidth / 2;
+            const ch = canvas.clientHeight / 2 - 100;
+            createNode({ name: '水', en: 'Water', emoji: '💧' }, cw - 60, ch, true);
+            createNode({ name: '火', en: 'Fire', emoji: '🔥' }, cw + 60, ch, true);
+        }, 100);
+    </script>
+</body>
+</html>
